@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">    
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+
+    </head>
+    <body>
+        <header class="site-header">
+            <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+                <div class="container">
+                    <a class="navbar-brand mr-4" href="/">Inventario Quinova</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarToggle">
+                        <div class="navbar-nav mr-auto">
+                            <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+                        </div>
+                        <!-- Navbar Right Side -->
+                        <div class="navbar-nav">
+                            {% if current_user.is_authenticated %}  
+                                <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>    
+                                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+                            {% else %}
+                                <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+                                <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        {% block no_div %}{% endblock no_div %}
+        <main role="main" class="container">
+            <div class="row">
+                <div class="col-md-8">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {% if current_user.is_authenticated and title != 'Home' %}
+                    {% if (title == 'Lab Home' or title == 'Bod Home') and (current_user.area.value == 'Lab' or current_user.area.value == 'Bod') %}
+                    {% else %}
+                        {% if current_user.area.value == 'Lab' %}
+                        <a href="{{ url_for('main.lab_home') }}">
+                            <button class="btn btn-outline-primary mt-3 mb-3">
+                                Menu Principal
+                            </button>
+                        </a>
+                        {% elif current_user.area.value == 'Bod' %}
+                        <a href="{{ url_for('main.bod_home') }}">
+                            <button class="btn btn-outline-primary mt-3 mb-3">
+                                Menu Principal
+                            </button>
+                        </a>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                {% if area == 'Lab' %}
+                    {% if current_user.area.value == 'Lab_Bod' and title != 'Lab Home' %}
+                        <a href="{{ url_for('main.lab_home') }}">
+                            <button class="btn btn-outline-primary mt-3 mb-3">
+                                Menu Principal
+                            </button>
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('reactivos.lab_home_reactivo') }}">
+                        <button class="btn btn-outline-success mt-3 mb-3">
+                            Menu Reactivos
+                        </button>
+                    </a>
+                    <a href="{{ url_for('materias.lab_home_materia') }}">
+                        <button class="btn btn-outline-success mt-3 mb-3">
+                            Menu Materias
+                        </button>
+                    </a>
+                {% elif area == 'Bod' %}
+                    {% if current_user.area.value == 'Lab_Bod' and title != 'Bod Home' %}
+                        <a href="{{ url_for('main.bod_home') }}">
+                            <button class="btn btn-outline-primary mt-3 mb-3">
+                                Menu Principal
+                            </button>
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('reactivos.bod_home_reactivo') }}">
+                        <button class="btn btn-outline-success mt-3 mb-3">
+                            Menu Reactivos
+                        </button>
+                    </a>
+                    <a href="{{ url_for('materias.bod_home_materia') }}">
+                        <button class="btn btn-outline-success mt-3 mb-3">
+                            Menu Materias
+                        </button>
+                    </a>
+                {% endif %}
+                {% block content %}{% endblock %}
+                </div>
+            </div>
+        </main>
+        {% block table %}{% endblock %}
+        
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            
+    </body>
+</html>

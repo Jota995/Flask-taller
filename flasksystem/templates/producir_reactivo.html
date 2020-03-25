@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="article-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-botom mb-4">{{ legend }}</legend>
+                <article class="media content-section">
+                    <div class="media-body">
+                        {% if area == 'Lab' %}
+                            <h2 class="article-title"><a href="{{ url_for('reactivos.lab_reactivo', reactivo_id=reactivo.id) }}">{{ reactivo.nombre }}</a></h2>
+                            <p class="article-content">Codigo:   {{ reactivo.codigo }}</p>
+                            <p class="article-content">Cantidad Actual:    {{ reactivo.cantidad }} {{ reactivo.medida.value }}</p>
+                        {% elif area == 'Bod' %}
+                            <h2 class="article-title"><a href="{{ url_for('reactivos.bod_reactivo', reactivo_id=reactivo.id) }}">{{ reactivo.nombre }}</a></h2>
+                            <p class="article-content">Codigo:   {{ reactivo.codigo }}</p>
+                            <p class="article-content">Cantidad Actual:    {{ reactivo.cantidad }} {{ reactivo.medida.value }}</p>
+                        {% endif %}
+                    </div>
+                </article>                
+                <div class="form-group">
+                    {{ form.cantidad.label(class="form-control-label") }}
+
+                    {% if form.cantidad.errors %}
+                        {{ form.cantidad(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.cantidad.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.cantidad(class="form-control form-control-lg") }}
+                    {% endif %}
+
+                </div>
+                <div class="form-group">
+                    {{ form.nro_analisis.label(class="form-control-label") }}
+
+                    {% if form.nro_analisis.errors %}
+                        {{ form.nro_analisis(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.nro_analisis.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.nro_analisis(class="form-control form-control-lg") }}
+                    {% endif %}
+
+                </div>
+                <div class="form-group">
+                    {{ form.observacion.label(class="form-control-label") }}
+
+                    {% if form.observacion.errors %}
+                        {{ form.observacion(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.observacion.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.observacion(class="form-control form-control-lg") }}
+                    {% endif %}
+                    
+                </div>             
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+    
+{% endblock content %}

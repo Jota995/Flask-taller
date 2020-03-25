@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    {% block menu %}{% endblock menu %}
+
+{% endblock content %}
+
+{% block table %}
+    <h2 class="text-center">{{title}}</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <!-- <th>Id</th> -->
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Codigo</th>
+                    <th>Cantidad</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Observacion</th>
+                    <th class="text-right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% block historial %}{% endblock historial %}
+            </tbody>
+        </table>
+    </div>
+{% endblock table %}

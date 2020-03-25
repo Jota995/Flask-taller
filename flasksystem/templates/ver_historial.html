@@ -1,0 +1,65 @@
+{% extends "historial_base_total.html" %}
+{% block menu %}
+
+{% endblock menu %}
+{% block historial %}
+    <h2 class="text-center">{{ title }}</h2>
+    <div class="table-responsive">
+        {% for historial in historiales %}
+            {% if historial.tipo == 'Materia' %}
+                <tr>
+                    <td>-</td>
+                    <td>{{ historial.historial_materia.tipo }}</td>
+                    <td>{{ historial.historial_materia.materia.nombre }}</td>
+                    <td>{{ historial.historial_materia.materia.codigo }}</td>
+                    <td>{{ historial.tipo }}</td>
+                    {% if historial.historial_materia.tipo == 'Entrada' %}
+                        <td>+{{ historial.historial_materia.cantidad }} {{ historial.historial_materia.materia.medida.value }}</td>
+                    {% else %}
+                        <td>-{{ historial.historial_materia.cantidad }} {{ historial.historial_materia.materia.medida.value }}</td>
+                    {% endif %}
+                    <td>{{ historial.historial_materia.user.username }} | {{ historial.historial_materia.user.email }}</td>
+                    <td>{{ historial.historial_materia.fecha_registro.strftime('%d-%m-%Y   %H:%M:%S') }}</td>
+                    <td>{{ historial.historial_materia.observacion }}</td>
+                    <td class="text-right">
+                        {% if area == 'Lab' %}
+                            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('materias.lab_materia', materia_id=historial.historial_materia.materia.id) }}">Ver</a>                         
+                        {% elif area == 'Bod' %}
+                            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('materias.bod_materia', materia_id=historial.historial_materia.materia.id) }}">Ver</a>                         
+                        {% endif %}
+                        
+                    </td>
+                </tr>
+            {% else %}
+                {% if historial.tipo == 'Reactivo' %}
+                    <tr>
+                        {% if historial.historial_reactivo.tipo == 'Salida' or historial.historial_reactivo.tipo == 'Produccion' %}
+                            <td>{{ historial.historial_reactivo.lote }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %} 
+                        <td>{{ historial.historial_reactivo.tipo }}</td>
+                        <td>{{ historial.historial_reactivo.reactivo.nombre }}</td>
+                        <td>{{ historial.historial_reactivo.reactivo.codigo }}</td>
+                        <td>{{ historial.tipo }}</td>
+                        {% if historial.historial_reactivo.tipo == 'Salida' %}
+                            <td>-{{ historial.historial_reactivo.cantidad }} {{ historial.historial_reactivo.reactivo.medida.value }}</td>
+                        {% else %}
+                            <td>+{{ historial.historial_reactivo.cantidad }} {{ historial.historial_reactivo.reactivo.medida.value }}</td>
+                        {% endif %}
+                        <td>{{ historial.historial_reactivo.user.username }} | {{ historial.historial_reactivo.user.email }}</td>
+                        <td>{{ historial.historial_reactivo.fecha_registro.strftime('%d-%m-%Y   %H:%M:%S') }}</td>
+                        <td>{{ historial.historial_reactivo.observacion }}</td>
+                        <td class="text-right">
+                            {% if area == 'Lab' %}
+                                <a class="btn btn-outline-primary btn-sm" href="{{ url_for('reactivos.lab_reactivo', reactivo_id=historial.historial_reactivo.reactivo.id) }}">Ver</a>                  
+                            {% elif area == 'Bod' %}
+                                <a class="btn btn-outline-primary btn-sm" href="{{ url_for('reactivos.bod_reactivo', reactivo_id=historial.historial_reactivo.reactivo.id) }}">Ver</a>                  
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock historial %}

@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <article class="media content-section">
+        <div class="media-body">
+            <h2 class="article-title">{{ materia.nombre }}</h2>
+            <p class="article-content">Id:   {{ materia.id }}</p>
+            <p class="article-content">Codigo:   {{ materia.codigo }}</p>
+            <p class="article-content">Cantidad Actual:    {{ materia.cantidad }} {{ materia.medida.value }}</p>
+            <p class="article-content">Cantidad Alerta: {{ materia.bajo_stock }} {{ materia.medida.value }}</p>
+        </div>
+    </article>
+    <div>
+        {% if area == 'Lab' %}
+            {% if user.area.value == 'Lab' %}
+                <a class="btn btn-success btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.lab_add_materia', materia_id=materia.id) }}">Entrada</a>
+                <a class="btn btn-danger btn-sm m-1" href="{{ url_for('materias.lab_reduce_materia', materia_id=materia.id) }}">Salida</a>
+            {% endif %}    
+            <a class="btn btn-info btn-sm m-1" href="{{ url_for('materias.lab_historial_materia_especifico', materia_id=materia.id) }}">Historial</a>
+            {% if user.area.value == 'Lab' %}
+                <a class="btn btn-info btn-sm m-1" href="{{ url_for('materias.bod_alerta_materia', materia_id=materia.id) }}">Alerta</a>
+                <button type="button" class="btn btn-outline-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+            {% endif %}
+        {% elif area == 'Bod' %}
+            <a class="btn btn-success btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.bod_add_materia', materia_id=materia.id) }}">Entrada</a>
+            {% if user.area.value == 'Bod' %}
+                <a class="btn btn-danger btn-sm m-1" href="{{ url_for('materias.bod_reduce_materia', materia_id=materia.id) }}">Salida</a>
+            {% endif %}
+            <a class="btn btn-info btn-sm m-1" href="{{ url_for('materias.bod_historial_materia_especifico', materia_id=materia.id) }}">Historial</a>
+            {% if user.area.value == 'Bod' %}
+                <a class="btn btn-info btn-sm m-1" href="{{ url_for('materias.bod_alerta_materia', materia_id=materia.id) }}">Alerta</a>
+                <button type="button" class="btn btn-outline-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+            {% endif %}
+        {% endif %}
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar materia?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    {% if area == 'Lab' %}
+                        <form action="{{ url_for('materias.lab_delete_materia', materia_id=materia.id) }}" method="POST">
+                            <input class="btn btn-danger" type="submit" value="Eliminar">
+                        </form>
+                    {% elif area == 'Bod' %}
+                        <form action="{{ url_for('materias.bod_delete_materia', materia_id=materia.id) }}" method="POST">
+                            <input class="btn btn-danger" type="submit" value="Eliminar">
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>        
+{% endblock content %}

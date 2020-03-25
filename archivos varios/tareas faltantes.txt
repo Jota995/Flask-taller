@@ -1,0 +1,6 @@
+En bodega Dejar todo en gramos pero mostrarlo como kilogramos es decir:
+    - Al realizar entrega multiplicar por 1000 el numero ingresado
+    - Al realizar produccion trabajar con los valores normales
+    - Al mostrar las cantidades al usuario trabajar dividir las cantidades en 1000 y mostrarlas
+* Limitar las unidades a gramos y kilogramos en caso de solidos
+ ** Preguntar si es posible dejar todo en gramos y kilogramos, si no entonces preguntar sobre el caso de los liquidos y si existe otra unidad

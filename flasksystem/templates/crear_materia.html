@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="marca-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-botom mb-4">{{ legend }}</legend>             
+                <div class="form-group">
+                    {{ form.nombre.label(class="form-control-label") }}
+
+                    {% if form.nombre.errors %}
+                        {{ form.nombre(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.nombre.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.nombre(class="form-control form-control-lg") }}
+                    {% endif %}
+
+                </div>
+                <div class="form-group">
+                    {{ form.codigo.label(class="form-control-label") }}
+
+                    {% if form.codigo.errors %}
+                        {{ form.codigo(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.codigo.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.codigo(class="form-control form-control-lg") }}
+                    {% endif %}
+                    
+                </div>
+                <div class="form-group">
+                    {{ form.bajo_stock.label(class="form-control-label") }}
+
+                    {% if form.bajo_stock.errors %}
+                        {{ form.bajo_stock(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.bajo_stock.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.bajo_stock(class="form-control form-control-lg") }}
+                    {% endif %}
+                    
+                </div>
+                <div class="form-group">
+                    {{ form.medida.label(class="form-control-label") }}
+
+                    {% if form.medida.errors %}
+                        {{ form.medida(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.medida.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.medida(class="form-control form-control-lg") }}
+                    {% endif %}
+                    
+                </div>                
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

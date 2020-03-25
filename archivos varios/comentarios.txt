@@ -1,0 +1,33 @@
+# ------------------ PASOS PARA INGRESAR Y RELACIONAR REACTIVO - FORMULA - INGREDIENTE - MATERIA ------------------
+
+# 1.- Obtener el reactivo                                           | reactivo = Reactivo.query.get_or_404(reactivo_id)
+# 2.- Crear la formula con el reactivo obtenido                     | formula = Formula(reactivo=reactivo)
+# 3.- Crear un objeto de la tabla Ingrediente con su ratio          | ing = Ingrediente(ratio=form.ratio.data)
+# 4.- Asociarle una materia                                         | ing.materia = form.materia.data
+# 5.- Asociar la formula con la materia usando append               | formula.materias.append(ing)
+# 6.- Guardar los cambios en la base de datos                       | db.session.add(formula) y db.session.commit(formula)
+
+# -----------------------------------------------------------------------------------------------------------------
+
+# ---------------------------------------- PASOS PARA ElIMINAR UNA FORMULA ----------------------------------------
+
+# 1.- Obtener la formula                                            | formula = reactivo.formula / formula = Formula.query.filter_by(reactivo_id = reactivo.id).first()
+# 2.- Obtener los ingredientes de la formula                        | ing = Ingrediente.query.filter_by(formula_id = formula.id)
+# 3.- Eliminar los ingredientes                                     | ing.delete()
+# 4.- Eliminar la formula                                           | db.session.delete(formula)
+# 5.- Guardar los cambios                                           | db.session.commit()
+
+# -----------------------------------------------------------------------------------------------------------------
+
+# ------------------------------PASOS PARA LA ENTRADA DE REACTIVO EN BASE A SU FORMULA-----------------------------
+
+# 1.- Obtener el reactivo                                           | reactivo = Reactivo.query.get_or_404(reactivo_id)
+# 2.- Obtener formula y Revisar si existe                           | formula = reactivo.formula & if not formula
+# 3.- Obtener ingredientes donde formula esta presente              | ingredientes = Ingrediente.query.filter_by(formula_id=formula.id)
+# 4.- Iterar sobre ingredientes                                     | for assoc in ingredientes: 
+# 5.- Revisar si alguna cantidad de materia se vuelve negativa      | if assoc.materia.cantidad - form.cantidad.data * ratio < 0
+# 6.- Disminuir las cantidades de cada materia                      | assoc.materia.cantidad -= form.cantidad.data * ratio
+# 7.- Aumentar la cantidad de reactivo                              | reactivo.cantidad += form.cantidad.data
+
+# -----------------------------------------------------------------------------------------------------------------
+

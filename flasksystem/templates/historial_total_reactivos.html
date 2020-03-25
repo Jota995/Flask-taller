@@ -1,0 +1,28 @@
+{% extends "historial_base.html" %}
+
+{% block historial %}
+    {% for historial in historiales %}
+    <tr>
+        <!-- <td> jinja2 -> historial.reactivo.id </td> -->
+        <td>{{ historial.tipo }}</td>
+        <td>{{ historial.reactivo.nombre }}</td>
+        <td>{{ historial.reactivo.codigo }}</td>
+        {% if historial.tipo == 'Entrada' %}
+            <td>+{{ historial.cantidad }} {{ historial.reactivo.medida.value }}</td>
+        {% else %}
+            <td>-{{ historial.cantidad }} {{ historial.reactivo.medida.value }}</td>
+        {% endif %}
+        <td>{{ historial.user.username }} | {{ historial.user.email }}</td>
+        <td>{{ historial.fecha_registro.strftime('%d-%m-%Y   %H:%M:%S') }}</td>
+        <td>{{ historial.observacion }}</td>
+        <td class="text-right">
+            {% if area == 'Lab' %}
+                <a class="btn btn-outline-primary btn-sm" href="{{ url_for('reactivos.lab_reactivo', reactivo_id=historial.reactivo.id) }}">Ver</a>    
+            {% elif area == 'Bod' %}
+                <a class="btn btn-outline-primary btn-sm" href="{{ url_for('reactivos.bod_reactivo', reactivo_id=historial.reactivo.id) }}">Ver</a>    
+            {% endif %}
+                                
+        </td>
+    </tr>
+    {% endfor %}
+{% endblock historial %}

@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% if area == 'Lab' %}
+        <article class="media content-section">
+            <div class="media-body">
+                <h2 class="article-title"><a href="{{ url_for('reactivos.lab_reactivo', reactivo_id=reactivo.id) }}">{{ reactivo.nombre }}</a></h2>
+                <p class="article-content">Id:   {{ reactivo.id }}</p>
+                <p class="article-content">Cantidad Actual:    {{ reactivo.cantidad }} {{ reactivo.medida.value }}</p>
+            </div>
+        </article>
+    {% elif area == 'Bod' %}
+        <article class="media content-section">
+            <div class="media-body">
+                <h2 class="article-title"><a href="{{ url_for('reactivos.bod_reactivo', reactivo_id=reactivo.id) }}">{{ reactivo.nombre }}</a></h2>
+                <p class="article-content">Id:   {{ reactivo.id }}</p>
+                <p class="article-content">Cantidad Actual:    {{ reactivo.cantidad }} {{ reactivo.medida.value }}</p>
+            </div>
+        </article>    
+    {% endif %}
+{% endblock %}
+{% block table %}
+    <h2 class="text-center">Historial</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Lote</th>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Codigo</th>
+                    <th>Cantidad</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Observacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for historial in historiales %}
+                    <tr>
+                        <!-- Convertir ID en Nro de Lote -->
+                        {% if historial.tipo == 'Salida' or historial.tipo == 'Produccion' %}
+                            <td>{{ historial.lote }}</td>
+                        {% else %}
+                            <td> - </td>
+                        {% endif %}
+                        <td>{{ historial.tipo }}</td>
+                        <td>{{ historial.reactivo.nombre }}</td>
+                        <td>{{ historial.reactivo.codigo }}</td>
+                        {% if historial.tipo == 'Entrada' or historial.tipo == 'Produccion' %}
+                            <td>+{{ historial.cantidad }} {{ historial.reactivo.medida.value }}</td>
+                        {% else %}
+                            <td>-{{ historial.cantidad }} {{ historial.reactivo.medida.value }}</td>
+                        {% endif %}
+                        <td>{{ historial.user.username }} | {{ historial.user.email }}</td>
+                        <td>{{ historial.fecha_registro.strftime('%d-%m-%Y   %H:%M:%S') }}</td>
+                        <td>{{ historial.observacion }}</td> 
+                    </tr>
+                {% endfor %}                
+            </tbody>
+        </table>
+    </div>    
+
+{% endblock table %}

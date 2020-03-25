@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block table %}
+    <h2 class="text-center">Historial</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Tipo</th>
+                    <th>Codigo</th>
+                    <th>Cantidad</th>
+                    <th class="text-right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% block historial %}{% endblock historial %}
+            </tbody>
+        </table>
+    </div>
+{% endblock table %}

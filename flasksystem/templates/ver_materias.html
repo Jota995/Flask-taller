@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div>
+        {% if area == 'Lab' %}
+            {% if user.area.value == 'Lab' %}
+            <a href="{{ url_for('materias.lab_new_materia') }}">
+                <button class="btn btn btn-outline-success mt-3 mb-3">
+                    Nueva materia
+                </button>
+            </a>
+            {% endif %}
+            <a href="{{ url_for('materias.lab_historial_materias') }}">
+                <button class="btn btn-outline-info mt-3 mb-3">
+                    Historial
+                </button>
+            </a>
+        {% elif area == 'Bod' %}
+            {% if user.area.value == 'Bod' %}
+            <a href="{{ url_for('materias.bod_new_materia') }}">
+                <button class="btn btn btn-outline-success mt-3 mb-3">
+                    Nueva materia
+                </button>
+            </a>
+            {% endif %}
+            <a href="{{ url_for('materias.bod_historial_materias') }}">
+                <button class="btn btn-outline-info mt-3 mb-3">
+                    Historial
+                </button>
+            </a>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block table %}
+    <h3 class="text-center">Inventario Materias</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Codigo</th>
+                    <th>Tipo</th>
+                    <th>Cantidad</th>
+                    <th class="text-right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for materia in materias %}
+                    <tr>
+                        <td>{{ materia.id }}</td>
+                        <td>{{ materia.nombre }}</td>
+                        <td>{{ materia.codigo }}</td>
+                        <td>{{ materia.tipo }}</td>
+                        <td>{{ materia.cantidad }} {{ materia.medida.value }}</td>
+                        <td class="text-right">
+                            {% if area == 'Lab' %}
+                                <a class="btn btn-primary btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.lab_materia', materia_id=materia.id) }}">Ver</a>
+                                {% if user.area.value == 'Lab' %}
+                                    <a class="btn btn-success btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.lab_add_materia', materia_id=materia.id) }}">Entrada</a>
+                                    <a class="btn btn-danger btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.lab_reduce_materia', materia_id=materia.id) }}">Salida</a>
+                                {% endif %}
+                                <a class="btn btn-info btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.lab_historial_materia_especifico', materia_id=materia.id) }}">Historial</a> 
+                            {% elif area == 'Bod' %}
+                                <a class="btn btn-primary btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.bod_materia', materia_id=materia.id) }}">Ver</a>
+                                {% if user.area.value == 'Bod' %}
+                                    <a class="btn btn-success btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.bod_add_materia', materia_id=materia.id) }}">Entrada</a>
+                                    <a class="btn btn-danger btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.bod_reduce_materia', materia_id=materia.id) }}">Salida</a>
+                                {% endif %}
+                                <a class="btn btn-info btn-sm mt-1 mb-1 mr-1" href="{{ url_for('materias.bod_historial_materia_especifico', materia_id=materia.id) }}">Historial</a> 
+                            {% endif %}               
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock table %}

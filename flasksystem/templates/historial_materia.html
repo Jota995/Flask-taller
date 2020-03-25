@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}
+        {% if area == 'Lab' %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <h2 class="article-title"><a href="{{ url_for('materias.lab_materia', materia_id=materia.id) }}">{{ materia.nombre }}</a></h2>
+                    <p class="article-content">Id:   {{ materia.id }}</p>
+                    <p class="article-content">Codigo:   {{ materia.codigo }}</p>
+                    <p class="article-content">Cantidad Actual:    {{ materia.cantidad }} {{ materia.medida.value }}</p>
+                </div>
+                </article>
+        {% elif area == 'Bod' %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <h2 class="article-title"><a href="{{ url_for('materias.bod_materia', materia_id=materia.id) }}">{{ materia.nombre }}</a></h2>
+                    <p class="article-content">Id:   {{ materia.id }}</p>
+                    <p class="article-content">Codigo:   {{ materia.codigo }}</p>
+                    <p class="article-content">Cantidad Actual:    {{ materia.cantidad }} {{ materia.medida.value }}</p>
+                </div>
+                </article>
+        {% endif %}
+
+{% endblock content %}
+
+{% block table %}
+    <h2 class="text-center">Historial</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Codigo</th>
+                    <th>Cantidad</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Observacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for historial in historiales %}
+                    <tr>
+                        <td>{{ historial.tipo }}</td>
+                        <td>{{ historial.materia.nombre }}</td>
+                        <td>{{ historial.materia.codigo }}</td>
+                        {% if historial.tipo == 'Entrada' %}
+                            <td>+{{ historial.cantidad }} {{ historial.materia.medida.value }}</td>
+                        {% else %}
+                            <td>-{{ historial.cantidad }} {{ historial.materia.medida.value }}</td>
+                        {% endif %}
+                        <td>{{ historial.user.username }} | {{ historial.user.email }}</td>
+                        <td>{{ historial.fecha_registro.strftime('%d-%m-%Y   %H:%M:%S') }}</td>
+                        <td>{{ historial.observacion }}</td> 
+                    </tr>
+                {% endfor %}                
+            </tbody>
+        </table>
+    </div>    
+
+{% endblock table %}

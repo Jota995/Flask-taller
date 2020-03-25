@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <article class="media content-section">
+        <div class="media-body">
+            <h2 class="article-title">{{ reactivo.nombre }}</h2>
+            <p class="article-content">Id:   {{ reactivo.id }}</p>
+            <p class="article-content">Codigo:   {{ reactivo.codigo }}</p>
+            <p class="article-content">Cantidad Actual:    {{ reactivo.cantidad }} {{ reactivo.medida.value }}</p>
+            <p class="article-content">Cantidad Alerta: {{ reactivo.bajo_stock }} {{ reactivo.medida.value }}</p>
+        </div>
+    </article>
+    <div>
+        {% if area == 'Lab' %}
+            {% if user.area.value == 'Lab' %}
+                <a class="btn btn-success btn-sm mt-1 mb-1 mr-1" href="{{ url_for('reactivos.lab_add_reactivo', reactivo_id=reactivo.id) }}">Entrada</a>
+                <a class="btn btn-success btn-sm mt-1 mb-1 mr-1" href="{{ url_for('reactivos.lab_entrada_reactivo', reactivo_id=reactivo.id) }}">Produccion</a>
+                <a class="btn btn-danger btn-sm m-1" href="{{ url_for('reactivos.lab_reduce_reactivo', reactivo_id=reactivo.id) }}">Salida</a>
+                {% if not reactivo.tiene_formula %}
+                    <a class="btn btn-warning btn-sm m-1" href="{{ url_for('reactivos.lab_formula', reactivo_id=reactivo.id) }}">Formula</a>
+                {% endif %}
+            {% endif %}
+            <a class="btn btn-info btn-sm m-1" href="{{ url_for('reactivos.lab_consulta', reactivo_id=reactivo.id) }}">Consulta</a>
+            <a class="btn btn-info btn-sm m-1" href="{{ url_for('reactivos.lab_historial_reactivo_especifico', reactivo_id=reactivo.id) }}">Historial</a>
+            {% if user.area.value == 'Lab' %}
+                <a class="btn btn-info btn-sm m-1" href="{{ url_for('reactivos.lab_alerta_reactivo', reactivo_id=reactivo.id) }}">Alerta</a>
+                <button type="button" class="btn btn-outline-danger btn-sm ml-1 mt-1 mb-1" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+            {% endif %}
+        {% elif area == 'Bod' %}
+            {% if user.area.value == 'Bod' %}
+                <a class="btn btn-success btn-sm mt-1 mb-1 mr-1" href="{{ url_for('reactivos.bod_add_reactivo', reactivo_id=reactivo.id) }}">Entrada</a>
+                <a class="btn btn-success btn-sm mt-1 mb-1 mr-1" href="{{ url_for('reactivos.bod_entrada_reactivo', reactivo_id=reactivo.id) }}">Produccion</a>
+                <a class="btn btn-danger btn-sm m-1" href="{{ url_for('reactivos.bod_reduce_reactivo', reactivo_id=reactivo.id) }}">Salida</a>
+                {% if not reactivo.tiene_formula %}
+                    <a class="btn btn-warning btn-sm m-1" href="{{ url_for('reactivos.bod_formula', reactivo_id=reactivo.id) }}">Formula</a>
+                {% endif %}
+            {% endif %}
+            <a class="btn btn-info btn-sm m-1" href="{{ url_for('reactivos.bod_consulta', reactivo_id=reactivo.id) }}">Consulta</a>
+            <a class="btn btn-info btn-sm m-1" href="{{ url_for('reactivos.bod_historial_reactivo_especifico', reactivo_id=reactivo.id) }}">Historial</a>
+            {% if user.area.value == 'Bod' %}
+                <a class="btn btn-info btn-sm m-1" href="{{ url_for('reactivos.bod_alerta_reactivo', reactivo_id=reactivo.id) }}">Alerta</a>
+                <button type="button" class="btn btn-outline-danger btn-sm ml-1 mt-1 mb-1" data-toggle="modal" data-target="#deleteModal">Eliminar</button>
+            {% endif %}
+        {% endif %}
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar Reactivo?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    {% if area == 'Lab' %}
+                        <form action="{{ url_for('reactivos.lab_delete_reactivo', reactivo_id=reactivo.id) }}" method="POST">
+                            <input class="btn btn-danger" type="submit" value="Eliminar">
+                        </form>
+                    {% elif area == 'Bod' %}
+                        <form action="{{ url_for('reactivos.bod_delete_reactivo', reactivo_id=reactivo.id) }}" method="POST">
+                            <input class="btn btn-danger" type="submit" value="Eliminar">
+                        </form>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>        
+{% endblock content %}

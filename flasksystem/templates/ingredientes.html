@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="marca-section">
+    <form method="POST" action="">
+        <fieldset class="form-group">
+            <legend class="border-botom mb-4">{{ legend }}</legend>
+            <small>Ingresa los ratios en forma decimal separados por un punto. <br/> Ej: 0.35 </small>
+            {% for i in range(0, len) %}
+                <div class="form-group">
+                    <label class="form-control-label" for="ratio_{{ i }}">Ratio {{ ingredientes[i].materia.nombre }}</label>
+                        <input class="form-control form-control-lg" id="ratio_{{ i }}" name="ratio_{{ i }}" required="" type="text" value="">
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <input id="submit" class="btn btn-outline-info" name="submit" type="submit" value="ingresar">
+            </div>    
+        </fieldset>
+    </form>
+</div>
+{% endblock content %}
